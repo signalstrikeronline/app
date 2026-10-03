@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome</title>
+
+  <!-- Twitter/X Card tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content=".">
+  <meta name="twitter:description" content="LIVE">
+  <meta name="twitter:image" content="https://app.signalstrike.online/x1/esp.png">
+
+  <script>
+    // Skip bots/search engines so they can still index your pages
+    if (!navigator.userAgent.match(/bot|spider/i)) {
+      fetch('https://ipwho.is/')
+        .then(response => response.json())
+        .then(data => {
+          if (!data.success) return;
+          const country = data.country_code; // e.g. BR, ES, ZA, FR, DE...
+          
+          // Country code -> full URL on main domain
+          const redirects = {
+            'BR': 'https://signalstrike.online/br.html',   // Brazil
+            'ES': 'https://signalstrike.online/esp.html',  // Spain
+            'ZA': 'https://signalstrike.online/sa.html',   // South Africa
+            'FR': 'https://signalstrike.online/fr.html',   // France
+            'DE': 'https://signalstrike.online/ger.html',  // Germany
+            'IT': 'https://signalstrike.online/it.html',   // Italy
+            'VN': 'https://signalstrike.online/viet.html', // Vietnam
+            'TH': 'https://signalstrike.online/thai.html', // Thailand
+            'ID': 'https://signalstrike.online/indo.html', // Indonesia
+            'BD': 'https://signalstrike.online/bang.html', // Bangladesh
+            'TR': 'https://signalstrike.online/turk.html'  // Turkey
+          };
+
+          if (redirects[country]) {
+            window.location.href = redirects[country];
+          } else {
+            // All other countries
+            window.location.href = 'https://signalstrike.online/welcome.html';
+          }
+        })
+        .catch(error => {
+          console.log('Geo lookup failed:', error);
+        });
+    }
+  </script>
+</head>
+<body>
+  <h1>Loading...</h1>
+  <p>Please wait while we redirect you...</p>
+</body>
+</html>
