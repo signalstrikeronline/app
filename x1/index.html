@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pulse — Live Crypto Trends & Trending Coins</title>
+<meta name="description" content="Live prices, top movers and trending coins from CoinGecko. Free, no sign-up.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body{font-family:Inter,system-ui,sans-serif;background:#07090f;color:#e6e9f2}
+  h1,h2,.num{font-family:'Space Grotesk',Inter,sans-serif}
+  .glass{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(12px)}
+  .glow{background:radial-gradient(60% 50% at 20% 0%,rgba(0,229,160,.18),transparent),radial-gradient(50% 40% at 90% 10%,rgba(124,92,255,.18),transparent)}
+  .up{color:#00e5a0}.down{color:#ff5d7a}
+  .tick{display:flex;gap:2.5rem;white-space:nowrap;animation:scroll 40s linear infinite}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.tick{animation:none}}
+  button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #00e5a0;outline-offset:2px}
+  .row:hover{background:rgba(255,255,255,.04)}
+</style>
+</head>
+<body class="glow min-h-screen">
+
+<div class="overflow-hidden border-b border-white/10 py-2 text-sm bg-black/30" aria-label="Price ticker">
+  <div class="tick" id="ticker"><span class="text-white/50">Loading live prices…</span></div>
+</div>
+
+<header class="max-w-6xl mx-auto px-4 pt-10 pb-6">
+  <div class="flex items-center justify-between">
+    <div class="num text-2xl font-bold">Pulse<span class="up">.</span></div>
+    <a href="#trending" class="text-sm text-white/60 hover:text-white">Trending now</a>
+  </div>
+  <h1 class="num text-4xl sm:text-6xl font-bold mt-12 leading-tight max-w-3xl">See what the crypto market is doing right now.</h1>
+  <p class="text-white/60 mt-4 max-w-xl text-lg">Live prices, biggest movers and the coins people are searching for. Data from CoinGecko. Free, no account needed.</p>
+  <div class="mt-6 flex flex-wrap gap-3">
+    <div class="glass rounded-xl px-4 py-3"><div class="text-xs text-white/50">Market cap</div><div class="num text-lg" id="mcap">—</div></div>
+    <div class="glass rounded-xl px-4 py-3"><div class="text-xs text-white/50">24h volume</div><div class="num text-lg" id="vol">—</div></div>
+    <div class="glass rounded-xl px-4 py-3"><div class="text-xs text-white/50">BTC dominance</div><div class="num text-lg" id="dom">—</div></div>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-4 pb-16 grid lg:grid-cols-3 gap-6">
+
+  <section class="lg:col-span-2 glass rounded-2xl p-4 sm:p-6" aria-labelledby="mk">
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+      <h2 id="mk" class="num text-xl">Markets</h2>
+      <div class="flex gap-2 items-center">
+        <input id="q" type="search" placeholder="Search coins" class="bg-black/30 border border-white/10 rounded-lg px-3 py-1.5 text-sm w-40" aria-label="Search coins">
+        <div class="flex rounded-lg overflow-hidden border border-white/10 text-sm" role="group" aria-label="Sort">
+          <button data-s="mc" class="sb px-3 py-1.5 bg-white/10">Top</button>
+          <button data-s="up" class="sb px-3 py-1.5">Gainers</button>
+          <button data-s="dn" class="sb px-3 py-1.5">Losers</button>
+        </div>
+      </div>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm min-w-[480px]">
+        <thead class="text-white/40 text-left"><tr><th class="py-2 pr-2">Coin</th><th class="text-right">Price</th><th class="text-right">24h</th><th class="text-right hidden sm:table-cell">7d</th><th class="w-8"></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <p id="status" class="text-xs text-white/40 mt-3"></p>
+  </section>
+
+  <aside class="space-y-6">
+    <section id="trending" class="glass rounded-2xl p-4 sm:p-6" aria-labelledby="tr">
+      <h2 id="tr" class="num text-xl mb-3">Trending searches</h2>
+      <ol id="trend" class="space-y-2 text-sm"></ol>
+    </section>
+
+    <section class="glass rounded-2xl p-4 sm:p-6" aria-labelledby="wl">
+      <h2 id="wl" class="num text-xl mb-3">Your watchlist</h2>
+      <ul id="watch" class="space-y-2 text-sm"><li class="text-white/40">Tap ☆ next to a coin to save it here.</li></ul>
+    </section>
+
+    <section class="rounded-2xl p-5 border border-[#00e5a0]/30 bg-[#00e5a0]/5" aria-labelledby="ref">
+      <h2 id="ref" class="num text-lg">Ready to trade?</h2>
+      <p class="text-sm text-white/70 mt-2">Pulse only shows data. To buy or sell, you need an exchange. We partner with Bybit, and you can sign up through our referral link. Any sign-up bonus is set by Bybit and may change, so check their current terms on the sign-up page.</p>
+      <a href="https://partner.bybit.com/b/XPOSTBONUS" target="_blank" rel="sponsored noopener" class="mt-4 inline-block w-full text-center rounded-xl bg-[#00e5a0] text-black font-semibold py-3 hover:brightness-110">Open Bybit sign-up</a>
+      <p class="text-xs text-white/40 mt-2">Referral link: we may earn a commission at no cost to you.</p>
+    </section>
+  </aside>
+</main>
+
+<footer class="border-t border-white/10 py-8 px-4 text-xs text-white/40 max-w-6xl mx-auto">
+  <p><strong class="text-white/60">Risk warning.</strong> Crypto is volatile and you can lose all the money you put in. Small and meme coins are the riskiest. Past performance does not predict future results. Nothing here is financial advice. Data from CoinGecko and may be delayed.</p>
+</footer>
+
+<script>
+const API='https://api.coingecko.com/api/v3';
+const $=id=>document.getElementById(id);
+let coins=[],sort='mc',watch=[];
+try{watch=JSON.parse(localStorage.getItem('watch')||'[]')}catch(e){}
+const usd=n=>n==null?'—':n>=1?'$'+n.toLocaleString(undefined,{maximumFractionDigits:2}):'$'+n.toPrecision(3);
+const big=n=>n>=1e12?'$'+(n/1e12).toFixed(2)+'T':n>=1e9?'$'+(n/1e9).toFixed(1)+'B':'$'+(n/1e6).toFixed(0)+'M';
+const pct=n=>n==null?'—':`<span class="${n>=0?'up':'down'}">${n>=0?'▲':'▼'} ${Math.abs(n).toFixed(2)}%</span>`;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function spark(p,up){
+  if(!p||!p.length)return'';
+  const mn=Math.min(...p),mx=Math.max(...p),w=80,h=24;
+  const pts=p.filter((_,i)=>i%6==0).map((v,i,a)=>`${(i/(a.length-1)*w).toFixed(1)},${(h-(v-mn)/(mx-mn||1)*h).toFixed(1)}`).join(' ');
+  return`<svg width="${w}" height="${h}" aria-hidden="true"><polyline fill="none" stroke="${up?'#00e5a0':'#ff5d7a'}" stroke-width="1.5" points="${pts}"/></svg>`;
+}
+function render(){
+  const q=$('q').value.toLowerCase();
+  let l=coins.filter(c=>c.name.toLowerCase().includes(q)||c.symbol.includes(q));
+  if(sort=='up')l=[...l].sort((a,b)=>b.price_change_percentage_24h-a.price_change_percentage_24h);
+  if(sort=='dn')l=[...l].sort((a,b)=>a.price_change_percentage_24h-b.price_change_percentage_24h);
+  $('rows').innerHTML=l.slice(0,25).map(c=>`<tr class="row border-t border-white/5">
+    <td class="py-2.5 pr-2"><div class="flex items-center gap-2"><img src="${esc(c.image)}" alt="" width="24" height="24" class="rounded-full"><span class="font-medium">${esc(c.name)}</span><span class="text-white/40 uppercase text-xs">${esc(c.symbol)}</span></div></td>
+    <td class="text-right num">${usd(c.current_price)}</td><td class="text-right">${pct(c.price_change_percentage_24h)}</td>
+    <td class="text-right hidden sm:table-cell">${spark(c.sparkline_in_7d&&c.sparkline_in_7d.price,(c.price_change_percentage_24h||0)>=0)}</td>
+    <td class="text-right"><button data-w="${esc(c.id)}" class="text-lg ${watch.includes(c.id)?'up':'text-white/40'}" aria-label="Toggle watchlist for ${esc(c.name)}">${watch.includes(c.id)?'★':'☆'}</button></td></tr>`).join('');
+  $('watch').innerHTML=watch.map(id=>coins.find(c=>c.id==id)).filter(Boolean).map(c=>`<li class="flex justify-between"><span>${esc(c.name)}</span><span>${usd(c.current_price)} ${pct(c.price_change_percentage_24h)}</span></li>`).join('')||'<li class="text-white/40">Tap ☆ next to a coin to save it here.</li>';
+  $('ticker').innerHTML=[...coins.slice(0,10),...coins.slice(0,10)].map(c=>`<span><b>${esc(c.symbol.toUpperCase())}</b> ${usd(c.current_price)} ${pct(c.price_change_percentage_24h)}</span>`).join('');
+}
+async function load(){
+  try{
+    const [m,t,g]=await Promise.all([
+      fetch(`${API}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&sparkline=true&price_change_percentage=24h`).then(r=>r.json()),
+      fetch(`${API}/search/trending`).then(r=>r.json()),
+      fetch(`${API}/global`).then(r=>r.json())
+    ]);
+    if(!Array.isArray(m))throw 0;
+    coins=m;render();
+    $('trend').innerHTML=t.coins.slice(0,7).map((x,i)=>`<li class="flex items-center gap-2"><span class="text-white/40 w-4">${i+1}</span><img src="${esc(x.item.thumb)}" alt="" width="20" height="20" class="rounded-full"><span>${esc(x.item.name)}</span><span class="ml-auto text-white/40 uppercase text-xs">${esc(x.item.symbol)}</span></li>`).join('');
+    const d=g.data;$('mcap').textContent=big(d.total_market_cap.usd);$('vol').textContent=big(d.total_volume.usd);$('dom').textContent=d.market_cap_percentage.btc.toFixed(1)+'%';
+    $('status').textContent='Updated '+new Date().toLocaleTimeString()+'. Refreshes every 60 seconds.';
+  }catch(e){
+    $('status').textContent='Live data is temporarily unavailable (CoinGecko free API limit). It will retry shortly.';
+  }
+}
+$('q').addEventListener('input',render);
+document.querySelectorAll('.sb').forEach(b=>b.onclick=()=>{sort=b.dataset.s;document.querySelectorAll('.sb').forEach(x=>x.classList.toggle('bg-white/10',x==b));render()});
+$('rows').addEventListener('click',e=>{const id=e.target.dataset.w;if(!id)return;watch=watch.includes(id)?watch.filter(x=>x!=id):[...watch,id];try{localStorage.setItem('watch',JSON.stringify(watch))}catch(_){}render()});
+load();setInterval(load,60000);
+</script>
+</body>
+</html>
