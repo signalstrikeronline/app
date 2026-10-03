@@ -3,108 +3,116 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pulse — Live Crypto Trends & Trending Coins</title>
-<meta name="description" content="Live prices, top movers and trending coins from CoinGecko. Free, no sign-up.">
+<title>Pulse — Track Whale Wallets, Copy Their Moves</title>
+<meta name="description" content="Follow large crypto wallet activity, see what whales are buying and selling, and copy the moves. Free to join — new members get 100,000 tokens.">
 <meta name="theme-color" content="#070a12">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#070a12;
-    --txt:#eef1f8;
-    --muted:#98a2b8;
+    --panel:rgba(255,255,255,.055);
+    --panel-2:rgba(255,255,255,.03);
     --stroke:rgba(255,255,255,.10);
     --stroke-2:rgba(255,255,255,.18);
+    --txt:#eef1f8;
+    --muted:#98a2b8;
+    --dim:#6d768c;
     --up:#25e39a;
     --down:#ff5f7e;
-    --accent:#7c5cff;
-    --star:#ffcf5c;
+    --gold:#ffcf5c;
+    --violet:#7c5cff;
     --r:18px;
   }
   *,*::before,*::after{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{
-    background:var(--bg);
-    color:var(--txt);
+    background:var(--bg);color:var(--txt);
     font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-    font-size:15px;
-    line-height:1.5;
-    min-height:100vh;
-    -webkit-font-smoothing:antialiased;
-    text-rendering:optimizeLegibility;
+    font-size:15px;line-height:1.5;min-height:100vh;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    overflow-x:hidden;
   }
-  h1,h2,h3{font-family:Sora,Inter,sans-serif;margin:0;letter-spacing:-.02em;line-height:1.15}
+  h1,h2,h3{font-family:Sora,Inter,sans-serif;margin:0;letter-spacing:-.025em;line-height:1.12}
   p{margin:0}
   img{display:block}
   a{color:inherit}
   .num{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
-  .up{color:var(--up)}
-  .down{color:var(--down)}
+  .up{color:var(--up)}.down{color:var(--down)}
   button{font:inherit;color:inherit}
   button:focus-visible,a:focus-visible,input:focus-visible,[role="button"]:focus-visible{
-    outline:2px solid var(--up);outline-offset:2px;border-radius:10px
-  }
+    outline:2px solid var(--up);outline-offset:2px;border-radius:10px}
 
   /* ---------- background ---------- */
   .bg-dots{
     position:fixed;inset:0;z-index:-2;pointer-events:none;
-    background-image:radial-gradient(circle,rgba(255,255,255,.16) 1px,transparent 1.5px);
+    background-image:radial-gradient(circle,rgba(255,255,255,.15) 1px,transparent 1.5px);
     background-size:24px 24px;
-    -webkit-mask-image:radial-gradient(130% 95% at 50% 0%,#000 25%,rgba(0,0,0,.35) 60%,transparent 95%);
-    mask-image:radial-gradient(130% 95% at 50% 0%,#000 25%,rgba(0,0,0,.35) 60%,transparent 95%);
+    -webkit-mask-image:radial-gradient(135% 90% at 50% 0%,#000 22%,rgba(0,0,0,.35) 58%,transparent 94%);
+    mask-image:radial-gradient(135% 90% at 50% 0%,#000 22%,rgba(0,0,0,.35) 58%,transparent 94%);
   }
   .bg-glow{
     position:fixed;inset:0;z-index:-1;pointer-events:none;
     background:
-      radial-gradient(48% 38% at 12% -5%,rgba(37,227,154,.16),transparent 70%),
-      radial-gradient(44% 34% at 88% 2%,rgba(124,92,255,.18),transparent 70%);
+      radial-gradient(48% 36% at 10% -6%,rgba(37,227,154,.16),transparent 70%),
+      radial-gradient(46% 34% at 90% 0%,rgba(124,92,255,.20),transparent 70%),
+      radial-gradient(40% 30% at 50% 110%,rgba(255,207,92,.07),transparent 70%);
   }
 
-  /* ---------- shell ---------- */
-  .wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+  .wrap{max-width:1220px;margin:0 auto;padding:0 16px}
 
+  /* ---------- top bar ---------- */
   .topbar{
-    position:sticky;top:0;z-index:50;
-    background:rgba(7,10,18,.78);
-    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    position:sticky;top:0;z-index:60;
+    background:rgba(7,10,18,.82);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
     border-bottom:1px solid var(--stroke);
   }
   .topbar .inner{
-    max-width:1180px;margin:0 auto;padding:11px 16px;
+    max-width:1220px;margin:0 auto;padding:10px 16px;
     display:flex;align-items:center;gap:12px;
   }
-  .logo{font-family:Sora,Inter,sans-serif;font-weight:700;font-size:19px;letter-spacing:-.03em}
+  .logo{
+    font-family:Sora,Inter,sans-serif;font-weight:800;font-size:19px;
+    letter-spacing:-.04em;text-decoration:none;white-space:nowrap;
+  }
   .logo em{font-style:normal;color:var(--up)}
-  .live{
-    display:inline-flex;align-items:center;gap:7px;
-    font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--muted);background:rgba(255,255,255,.05);
-    border:1px solid var(--stroke);border-radius:999px;padding:5px 11px;
+  .chips{
+    display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;
+    -ms-overflow-style:none;flex:1;min-width:0;
   }
-  .dot{width:7px;height:7px;border-radius:50%;background:var(--up);box-shadow:0 0 0 0 rgba(37,227,154,.6);animation:pulse 2.2s infinite}
-  @keyframes pulse{70%{box-shadow:0 0 0 8px rgba(37,227,154,0)}100%{box-shadow:0 0 0 0 rgba(37,227,154,0)}}
-  .spacer{flex:1}
-  .icon-btn{
-    width:36px;height:36px;display:grid;place-items:center;
+  .chips::-webkit-scrollbar{display:none}
+  .chip{
+    display:flex;align-items:center;gap:7px;white-space:nowrap;
     background:rgba(255,255,255,.05);border:1px solid var(--stroke);
-    border-radius:11px;cursor:pointer;color:var(--muted);transition:.18s;
+    border-radius:11px;padding:6px 10px;font-size:12.5px;cursor:pointer;
+    transition:.16s;
   }
-  .icon-btn:hover{color:#fff;background:rgba(255,255,255,.1)}
-  .icon-btn.spin svg{animation:rot .8s linear infinite}
-  @keyframes rot{to{transform:rotate(360deg)}}
-  .nav-link{
-    font-size:13.5px;font-weight:600;color:var(--muted);text-decoration:none;
-    padding:8px 12px;border-radius:10px;transition:.18s;white-space:nowrap;
+  .chip:hover{background:rgba(255,255,255,.1)}
+  .chip b{font-weight:700;font-size:12px;letter-spacing:.03em}
+  .chip .num{font-size:12.5px;color:#dfe4ee}
+  .chip .pc{font-size:11.5px;font-weight:700}
+  .spacer{flex:1}
+
+  .btn-gold{
+    display:inline-flex;align-items:center;justify-content:center;gap:7px;
+    background:linear-gradient(180deg,#ffe08a,#f7c33f);
+    color:#241a00;font-weight:700;font-size:13.5px;
+    border:0;border-radius:12px;padding:9px 15px;cursor:pointer;
+    text-decoration:none;white-space:nowrap;
+    box-shadow:0 4px 18px rgba(255,207,92,.22);
+    transition:.18s;
   }
-  .nav-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+  .btn-gold:hover{filter:brightness(1.07);transform:translateY(-1px)}
+  .btn-gold.big{padding:14px 22px;font-size:15px;border-radius:14px;width:100%}
 
   /* ---------- ticker ---------- */
   .ticker{position:relative;overflow:hidden;border-bottom:1px solid var(--stroke);background:rgba(255,255,255,.02)}
-  .ticker::before,.ticker::after{content:"";position:absolute;top:0;bottom:0;width:70px;z-index:2;pointer-events:none}
+  .ticker::before,.ticker::after{content:"";position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none}
   .ticker::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
   .ticker::after{right:0;background:linear-gradient(270deg,var(--bg),transparent)}
-  .tick{display:flex;gap:26px;width:max-content;padding:9px 0;white-space:nowrap;animation:scroll 48s linear infinite}
+  .tick{display:flex;gap:26px;width:max-content;padding:8px 0;white-space:nowrap;animation:scroll 50s linear infinite}
   .ticker:hover .tick{animation-play-state:paused}
   @keyframes scroll{to{transform:translateX(-50%)}}
   .ti{display:inline-flex;align-items:center;gap:8px;font-size:12.5px}
@@ -112,45 +120,141 @@
   .ti .num{color:var(--muted)}
 
   /* ---------- hero ---------- */
-  .hero{padding:40px 0 26px}
+  .hero{padding:38px 0 24px}
   .eyebrow{
-    display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--up);margin-bottom:14px;
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--up);margin-bottom:15px;
   }
-  .hero h1{font-size:clamp(30px,5.6vw,52px);font-weight:700;max-width:15ch}
-  .lede{color:var(--muted);max-width:52ch;margin-top:14px;font-size:16px}
+  .hero h1{font-size:clamp(31px,5.6vw,54px);font-weight:800;max-width:16ch}
+  .hero h1 span{
+    background:linear-gradient(100deg,var(--up),#8de8c4 40%,var(--violet));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .lede{color:#b9c2d4;max-width:56ch;margin-top:15px;font-size:16.5px}
+
+  /* bonus bar */
+  .bonus{
+    position:relative;margin-top:24px;border-radius:20px;overflow:hidden;
+    border:1px solid rgba(255,207,92,.35);
+    background:
+      radial-gradient(90% 140% at 0% 0%,rgba(255,207,92,.20),transparent 60%),
+      linear-gradient(180deg,rgba(255,207,92,.10),rgba(255,207,92,.02));
+    padding:18px;
+    display:flex;flex-wrap:wrap;align-items:center;gap:16px;
+  }
+  .bonus-tag{
+    font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+    color:#241a00;background:var(--gold);border-radius:999px;padding:5px 10px;
+  }
+  .bonus-main{flex:1;min-width:230px}
+  .bonus-main h2{font-size:clamp(19px,2.6vw,25px);font-weight:800;color:#fff}
+  .bonus-main h2 em{font-style:normal;color:var(--gold)}
+  .bonus-main p{font-size:13.5px;color:#c9d0de;margin-top:6px}
+  .bonus-side{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+  .countdown{display:flex;gap:6px}
+  .cd-box{
+    background:rgba(0,0,0,.4);border:1px solid rgba(255,207,92,.28);
+    border-radius:10px;padding:6px 9px;text-align:center;min-width:46px;
+  }
+  .cd-box b{display:block;font-family:"JetBrains Mono",monospace;font-size:15px;font-weight:700;color:var(--gold)}
+  .cd-box span{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+
   .stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
   .stat{
-    background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));
-    border:1px solid var(--stroke);border-radius:14px;padding:10px 15px;min-width:132px;
+    background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));
+    border:1px solid var(--stroke);border-radius:14px;padding:11px 15px;min-width:148px;
   }
-  .stat span{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-  .stat b{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:16px;font-variant-numeric:tabular-nums}
+  .stat span{display:block;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--dim)}
+  .stat b{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:17px;font-variant-numeric:tabular-nums}
 
-  /* ---------- cards / layout ---------- */
+  /* ---------- layout ---------- */
   .layout{display:grid;grid-template-columns:1fr;gap:18px;padding-bottom:34px}
-  @media (min-width:1000px){.layout{grid-template-columns:minmax(0,1.9fr) minmax(0,1fr)}}
+  @media(min-width:1020px){.layout{grid-template-columns:minmax(0,1.75fr) minmax(0,1fr)}}
   .col{display:flex;flex-direction:column;gap:18px;min-width:0}
   .card{
-    background:linear-gradient(180deg,rgba(255,255,255,.062),rgba(255,255,255,.028));
+    background:linear-gradient(180deg,rgba(255,255,255,.062),rgba(255,255,255,.026));
     border:1px solid var(--stroke);border-radius:var(--r);
     backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
     padding:16px;
   }
-  @media (min-width:640px){.card{padding:20px}}
+  @media(min-width:640px){.card{padding:20px}}
   .card-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
-  .card-head h2{font-size:17px}
-  .card-head .spacer{min-width:6px}
+  .card-head h2{font-size:17px;display:flex;align-items:center;gap:9px}
+  .live-dot{
+    width:8px;height:8px;border-radius:50%;background:var(--up);
+    box-shadow:0 0 0 0 rgba(37,227,154,.6);animation:pulse 2s infinite;flex:none;
+  }
+  @keyframes pulse{70%{box-shadow:0 0 0 8px rgba(37,227,154,0)}100%{box-shadow:0 0 0 0 rgba(37,227,154,0)}}
+  .card-head .spacer{min-width:6px;flex:1}
+
+  /* ---------- whale feed ---------- */
+  #feed{display:flex;flex-direction:column;gap:2px}
+  .wrow{
+    display:grid;
+    grid-template-columns:52px 60px minmax(0,1fr) 98px 112px 68px;
+    align-items:center;gap:10px;
+    padding:9px 8px;border-radius:12px;border:1px solid transparent;
+    cursor:pointer;transition:background .15s,border-color .15s;
+  }
+  .wrow:hover{background:rgba(255,255,255,.055)}
+  .wrow.flash{animation:flash 1.6s ease-out}
+  @keyframes flash{
+    0%{background:rgba(37,227,154,.20);border-color:rgba(37,227,154,.35)}
+    100%{background:transparent;border-color:transparent}
+  }
+  .w-time{font-size:11.5px;color:var(--dim);font-family:"JetBrains Mono",monospace}
+  .side{
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+    border-radius:8px;padding:4px 0;width:100%;
+  }
+  .side.buy{color:var(--up);background:rgba(37,227,154,.14)}
+  .side.sell{color:var(--down);background:rgba(255,95,126,.14)}
+  .w-coin{display:flex;align-items:center;gap:9px;min-width:0}
+  .w-coin img{border-radius:50%;flex:none}
+  .w-coin .t{min-width:0}
+  .w-coin .t b{display:block;font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .w-coin .t i{font-style:normal;font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+  .w-usd{text-align:right;font-family:"JetBrains Mono",monospace;font-size:13.5px;font-weight:700}
+  .w-wallet{
+    font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);
+    text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .copy{
+    display:inline-flex;align-items:center;justify-content:center;gap:5px;
+    border:1px solid var(--stroke-2);background:rgba(255,255,255,.06);
+    border-radius:9px;padding:5px 0;font-size:11.5px;font-weight:700;
+    cursor:pointer;transition:.16s;width:100%;
+  }
+  .copy:hover{background:rgba(255,255,255,.13)}
+  .copy.on{background:rgba(37,227,154,.16);border-color:rgba(37,227,154,.5);color:var(--up)}
+
+  @media(max-width:820px){
+    .wrow{
+      grid-template-columns:56px minmax(0,1fr) auto;
+      grid-template-areas:"side coin usd" "side coin copy";
+      row-gap:5px;column-gap:10px;padding:10px 8px;
+    }
+    .w-time,.w-wallet{display:none}
+    .w-side{grid-area:side;align-self:center}
+    .w-coin{grid-area:coin}
+    .w-usd{grid-area:usd;text-align:right}
+    .w-copy{grid-area:copy;justify-self:end;width:auto}
+    .copy{padding:4px 12px}
+  }
+
+  .feed-note{font-size:11px;color:var(--dim);margin-top:12px;line-height:1.5}
 
   /* ---------- controls ---------- */
-  .search{position:relative;flex:1 1 150px;max-width:230px}
-  .search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+  .search{position:relative;flex:1 1 140px;max-width:210px}
+  .search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--dim);pointer-events:none}
   .search input{
     width:100%;background:rgba(0,0,0,.35);border:1px solid var(--stroke);
     border-radius:12px;padding:9px 12px 9px 33px;color:var(--txt);
     font-size:14px;font-family:inherit;
   }
-  .search input::placeholder{color:#6d768c}
+  .search input::placeholder{color:var(--dim)}
   .search input:focus{border-color:var(--stroke-2);background:rgba(0,0,0,.5)}
 
   .seg{display:flex;gap:2px;padding:3px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--stroke)}
@@ -159,29 +263,29 @@
     font-size:13px;font-weight:600;color:var(--muted);transition:.16s;white-space:nowrap;
   }
   .seg button:hover{color:#fff}
-  .seg button.on{background:rgba(255,255,255,.13);color:#fff;box-shadow:0 1px 0 rgba(255,255,255,.07) inset}
+  .seg button.on{background:rgba(255,255,255,.13);color:#fff}
 
   /* ---------- market rows ---------- */
   #rows{display:flex;flex-direction:column;gap:2px}
   .row{
     display:grid;align-items:center;gap:12px;
-    grid-template-columns:22px 30px minmax(0,1fr) 78px 108px 92px 34px;
+    grid-template-columns:22px 28px minmax(0,1fr) 78px 104px 88px 32px;
     padding:9px 8px;border-radius:14px;cursor:pointer;
     border:1px solid transparent;transition:background .15s,border-color .15s;
   }
   .row:hover{background:rgba(255,255,255,.055)}
   .row.active{background:rgba(37,227,154,.07);border-color:rgba(37,227,154,.3)}
-  .rank{font-size:12px;color:var(--muted);text-align:right}
+  .rank{font-size:12px;color:var(--dim);text-align:right}
   .ico{border-radius:50%}
   .id{display:flex;flex-direction:column;min-width:0}
   .id b{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .id i{font-style:normal;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .id i{font-style:normal;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
   .spark{display:flex;justify-content:center;opacity:.95}
   .price{text-align:right;font-size:13.5px;font-weight:500}
   .chg{display:flex;justify-content:flex-end}
   .pill{
     display:inline-flex;align-items:center;gap:4px;border-radius:999px;
-    padding:3px 8px;font-size:12px;font-weight:700;
+    padding:3px 8px;font-size:11.5px;font-weight:700;
     font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums;
   }
   .pill.up{color:var(--up);background:rgba(37,227,154,.13)}
@@ -192,12 +296,12 @@
     font-size:16px;line-height:1;color:#5d667c;transition:.16s;
   }
   .star:hover{color:#fff;background:rgba(255,255,255,.08)}
-  .star.on{color:var(--star)}
+  .star.on{color:var(--gold)}
   .empty{color:var(--muted);font-size:13px;padding:10px 2px}
 
-  @media (max-width:780px){
+  @media(max-width:820px){
     .row{
-      grid-template-columns:30px minmax(0,1fr) auto 34px;
+      grid-template-columns:28px minmax(0,1fr) auto 32px;
       grid-template-areas:"ico id price star" "ico id chg star";
       row-gap:1px;column-gap:10px;padding:11px 8px;
     }
@@ -209,18 +313,18 @@
     .star{grid-area:star;align-self:center}
   }
 
-  .status{font-size:12px;color:var(--muted);margin-top:12px}
+  .status{font-size:12px;color:var(--dim);margin-top:12px}
 
   /* ---------- canvas chart ---------- */
   .chart-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
   .chart-head .ico{border-radius:50%}
   .chart-head .t{min-width:0}
   .chart-head .t b{display:block;font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .chart-head .t i{font-style:normal;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .chart-head .t i{font-style:normal;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
   .chart-right{margin-left:auto;text-align:right}
   .chart-right b{display:block;font-family:"JetBrains Mono",monospace;font-size:15px;font-weight:700}
-  canvas#chart{display:block;width:100%;height:132px;border-radius:12px}
-  .chart-foot{font-size:11.5px;color:var(--muted);margin-top:10px;display:flex;justify-content:space-between}
+  canvas#chart{display:block;width:100%;height:126px;border-radius:12px}
+  .chart-foot{font-size:11.5px;color:var(--dim);margin-top:10px;display:flex;justify-content:space-between;gap:10px}
 
   /* ---------- trending ---------- */
   ol#trend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px}
@@ -229,9 +333,9 @@
     font-size:13.5px;cursor:pointer;transition:background .15s;
   }
   ol#trend li:hover{background:rgba(255,255,255,.055)}
-  ol#trend .r{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--muted);width:14px}
+  ol#trend .r{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--dim);width:14px}
   ol#trend img{border-radius:50%}
-  ol#trend .sym{margin-left:auto;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  ol#trend .sym{margin-left:auto;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
 
   /* ---------- watchlist ---------- */
   ul#watch{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
@@ -244,28 +348,38 @@
   .w-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .w-item .num{margin-left:auto;color:var(--muted);font-size:12.5px}
 
-  /* ---------- referral ---------- */
-  .referral{
-    border:1px solid rgba(37,227,154,.32);
-    background:linear-gradient(180deg,rgba(37,227,154,.10),rgba(37,227,154,.03));
+  /* ---------- signup card ---------- */
+  .signup{
+    border:1px solid rgba(255,207,92,.4);
+    background:
+      radial-gradient(100% 120% at 0% 0%,rgba(255,207,92,.18),transparent 62%),
+      linear-gradient(180deg,rgba(255,207,92,.08),rgba(255,255,255,.02));
   }
-  .referral h2{font-size:16px;margin-bottom:8px}
-  .referral p{font-size:13.5px;color:#c6cddd}
-  .cta{
-    display:block;text-align:center;text-decoration:none;font-weight:700;font-size:14.5px;
-    background:var(--up);color:#04120c;border-radius:13px;padding:13px;margin-top:14px;
-    transition:.18s;
+  .signup .amount{
+    font-family:Sora,Inter,sans-serif;font-size:38px;font-weight:800;
+    line-height:1;color:var(--gold);letter-spacing:-.03em;
   }
-  .cta:hover{filter:brightness(1.08);transform:translateY(-1px)}
-  .fineprint{font-size:11.5px;color:var(--muted);margin-top:10px}
+  .signup h2{font-size:17px;margin-bottom:4px}
+  .signup .sub{font-size:12.5px;color:#c9d0de}
+  .signup ul{
+    list-style:none;margin:14px 0 0;padding:0;
+    display:flex;flex-direction:column;gap:7px;font-size:13.5px;color:#d3d9e5;
+  }
+  .signup li{display:flex;align-items:flex-start;gap:8px}
+  .signup li::before{
+    content:"";width:15px;height:15px;flex:none;margin-top:2.5px;border-radius:50%;
+    background:rgba(37,227,154,.18) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%2325e39a' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'><path d='M20 6 9 17l-5-5'/></svg>") center/11px no-repeat;
+  }
+  .fineprint{font-size:11px;color:var(--dim);margin-top:10px;line-height:1.55}
 
   footer{border-top:1px solid var(--stroke);padding:26px 16px 40px}
-  footer p{max-width:1180px;margin:0 auto;font-size:12px;color:var(--muted);line-height:1.7}
+  footer p{max-width:1220px;margin:0 auto;font-size:12px;color:var(--dim);line-height:1.7}
   footer strong{color:#c6cddd}
 
   @media (prefers-reduced-motion:reduce){
     .tick{animation:none}
-    .dot{animation:none}
+    .live-dot{animation:none}
+    .wrow.flash{animation:none}
     *{transition:none!important}
   }
 </style>
@@ -274,18 +388,18 @@
 <div class="bg-dots" aria-hidden="true"></div>
 <div class="bg-glow" aria-hidden="true"></div>
 
-<!-- ============ APP BAR ============ -->
+<!-- ============ TOP BAR : prices + signup ============ -->
 <header class="topbar">
   <div class="inner">
-    <div class="logo">Pulse<em>.</em></div>
-    <span class="live"><span class="dot"></span>Live</span>
+    <a class="logo" href="#">Pulse<em>.</em></a>
+    <div class="chips" id="chips" aria-label="Live prices"></div>
     <span class="spacer"></span>
-    <a href="#trending" class="nav-link">Trending</a>
-    <button id="refresh" class="icon-btn" aria-label="Refresh data" title="Refresh">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/>
+    <a href="#signup" class="btn-gold">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
       </svg>
-    </button>
+      Get 100K free
+    </a>
   </div>
 </header>
 
@@ -296,12 +410,34 @@
 
 <!-- ============ HERO ============ -->
 <section class="wrap hero">
-  <span class="eyebrow">CoinGecko · Live market data</span>
-  <h1>See what the crypto market is doing right now.</h1>
-  <p class="lede">Live prices, biggest movers and the coins people are searching for. Free, no account needed.</p>
+  <span class="eyebrow"><span class="live-dot"></span>Whale wallets · tracked live</span>
+  <h1>See what the whales are buying — <span>then copy it.</span></h1>
+  <p class="lede">We watch large wallet activity across the market and surface every big buy and sell as it happens. Follow the wallets that matter and mirror their moves in one tap. Free to join.</p>
+
+  <!-- bonus -->
+  <div class="bonus" id="signup">
+    <span class="bonus-tag">Limited</span>
+    <div class="bonus-main">
+      <h2><em>100,000 tokens</em> free for new members</h2>
+      <p>Signing up is completely free — no deposit, no card, no minimum. Tokens land in your account after verification. Offer ends when this week's allocation runs out.</p>
+    </div>
+    <div class="bonus-side">
+      <div class="countdown" id="countdown" aria-label="Offer ends in">
+        <div class="cd-box"><b id="cd-d">--</b><span>days</span></div>
+        <div class="cd-box"><b id="cd-h">--</b><span>hrs</span></div>
+        <div class="cd-box"><b id="cd-m">--</b><span>min</span></div>
+        <div class="cd-box"><b id="cd-s">--</b><span>sec</span></div>
+      </div>
+      <a href="https://partner.bybit.com/b/XPOSTBONUS" target="_blank" rel="sponsored noopener" class="btn-gold big">
+        Claim 100,000 tokens — free signup
+      </a>
+    </div>
+  </div>
+
   <div class="stats">
+    <div class="stat"><span>Whales tracked</span><b id="s-whales">—</b></div>
+    <div class="stat"><span>Large-tx volume 24h</span><b id="s-vol">—</b></div>
     <div class="stat"><span>Market cap</span><b id="mcap">—</b></div>
-    <div class="stat"><span>24h volume</span><b id="vol">—</b></div>
     <div class="stat"><span>BTC dominance</span><b id="dom">—</b></div>
   </div>
 </section>
@@ -309,8 +445,23 @@
 <!-- ============ MAIN ============ -->
 <main class="wrap layout">
 
-  <!-- markets -->
+  <!-- LEFT -->
   <section class="col">
+
+    <!-- whale feed -->
+    <div class="card" aria-labelledby="wf">
+      <div class="card-head">
+        <h2 id="wf"><span class="live-dot"></span>Whale flow</h2>
+        <span class="spacer"></span>
+        <span class="chip" style="cursor:default">
+          <span class="num" id="feedCount">0</span> txns in view
+        </span>
+      </div>
+      <div id="feed" role="list" aria-live="polite"></div>
+      <p class="feed-note">Feed is generated from live CoinGecko prices for demonstration. Tap any row to chart that coin, or hit <b>Copy</b> to mirror the wallet.</p>
+    </div>
+
+    <!-- markets -->
     <div class="card" aria-labelledby="mk">
       <div class="card-head">
         <h2 id="mk">Markets</h2>
@@ -332,11 +483,11 @@
     </div>
   </section>
 
-  <!-- side column -->
+  <!-- RIGHT -->
   <aside class="col">
 
-    <!-- small canvas chart -->
-    <section class="card" aria-labelledby="chTitle">
+    <!-- chart -->
+    <div class="card" aria-labelledby="chTitle">
       <div class="chart-head">
         <img id="chIco" class="ico" src="" alt="" width="30" height="30" hidden>
         <span class="t"><b id="chName">—</b><i id="chSym">select a coin</i></span>
@@ -350,6 +501,22 @@
         <span id="chTitle">7-day price</span>
         <span>Tap a row to switch</span>
       </div>
+    </div>
+
+    <!-- signup -->
+    <section class="card signup" aria-labelledby="ref">
+      <div class="amount">100,000</div>
+      <h2 id="ref">tokens, free for new members</h2>
+      <p class="sub">Limited allocation. No deposit required to sign up.</p>
+      <ul>
+        <li>Free account — no card, no minimum</li>
+        <li>Tokens credited after verification</li>
+        <li>Copy whale wallets in one tap</li>
+      </ul>
+      <a href="https://partner.bybit.com/b/XPOSTBONUS" target="_blank" rel="sponsored noopener" class="btn-gold big" style="margin-top:16px">
+        Sign up free &amp; claim
+      </a>
+      <p class="fineprint">Bonus amount and eligibility are set by the exchange and may change — check their current terms on the sign-up page. We may earn a commission from this link at no cost to you.</p>
     </section>
 
     <!-- trending -->
@@ -364,29 +531,23 @@
       <ul id="watch"><li class="empty">Tap ☆ next to a coin to save it here.</li></ul>
     </section>
 
-    <!-- referral -->
-    <section class="card referral" aria-labelledby="ref">
-      <h2 id="ref">Ready to trade?</h2>
-      <p>Pulse only shows data. To buy or sell you need an exchange. We partner with Bybit, and you can sign up through our referral link. Any sign-up bonus is set by Bybit and may change — check their current terms on the sign-up page.</p>
-      <a href="https://partner.bybit.com/b/XPOSTBONUS" target="_blank" rel="sponsored noopener" class="cta">Open Bybit sign-up</a>
-      <p class="fineprint">Referral link: we may earn a commission at no cost to you.</p>
-    </section>
-
   </aside>
 </main>
 
 <footer>
-  <p><strong>Risk warning.</strong> Crypto is volatile and you can lose all the money you put in. Small and meme coins are the riskiest. Past performance does not predict future results. Nothing here is financial advice. Data from CoinGecko and may be delayed.</p>
+  <p><strong>Risk warning.</strong> Crypto is volatile and you can lose all the money you put in. Small and meme coins are the riskiest. Past performance does not predict future results. Nothing here is financial advice. Whale activity is not a signal to buy or sell. Data from CoinGecko and may be delayed.</p>
 </footer>
 
 <script>
 const API = 'https://api.coingecko.com/api/v3';
 const $ = id => document.getElementById(id);
 
-let coins = [], sort = 'mc', watch = [], selected = null;
+let coins = [], sort = 'mc', watch = [], copied = new Set(), selected = null;
+let txs = [], txSeq = 0, whaleVolBase = 0;
 
 try { watch = JSON.parse(localStorage.getItem('watch') || '[]'); } catch (e) { watch = []; }
 if (!Array.isArray(watch)) watch = [];
+try { copied = new Set(JSON.parse(localStorage.getItem('copied') || '[]')); } catch (e) { copied = new Set(); }
 
 /* ---------- helpers ---------- */
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -397,6 +558,17 @@ const big = n => n == null ? '—'
   : n >= 1e12 ? '$' + (n / 1e12).toFixed(2) + 'T'
   : n >= 1e9  ? '$' + (n / 1e9).toFixed(1) + 'B'
   : '$' + (n / 1e6).toFixed(0) + 'M';
+const usdShort = n => n >= 1e9 ? '$' + (n / 1e9).toFixed(2) + 'B'
+  : n >= 1e6 ? '$' + (n / 1e6).toFixed(2) + 'M'
+  : n >= 1e3 ? '$' + (n / 1e3).toFixed(0) + 'K'
+  : '$' + n.toFixed(0);
+const amtShort = a => a >= 1e6 ? (a / 1e6).toFixed(2) + 'M'
+  : a >= 1e3 ? (a / 1e3).toFixed(1) + 'K'
+  : a >= 1 ? a.toFixed(2) : a.toPrecision(3);
+const ago = ts => {
+  const s = Math.max(0, (Date.now() - ts) / 1000);
+  return s < 60 ? Math.floor(s) + 's' : s < 3600 ? Math.floor(s / 60) + 'm' : Math.floor(s / 3600) + 'h';
+};
 
 function pill(n) {
   if (n == null || isNaN(n)) return '<span class="pill flat">—</span>';
@@ -419,7 +591,99 @@ function spark(p, up) {
       stroke-linecap="round" stroke-linejoin="round" points="${pts}"/></svg>`;
 }
 
-/* ---------- render ---------- */
+/* ---------- fake whale feed ---------- */
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+let rng = mulberry32(Math.floor(Date.now() / 1000) & 0xffff);
+
+const WALLETS = [
+  '0x7a3f…9c21', '0x1c9b…4ef0', '0x9d2e…7b13', '0x4f81…a6d9',
+  '0xbe07…2c55', '0x83ac…f104', '0x6e19…8d72', '0xd40b…3a91',
+  '0x2f7c…5e08', '0xab63…1f4d', '0x59e0…c8b6', '0x37da…0f82'
+];
+
+function makeTx(pastMs) {
+  if (!coins.length) return null;
+  const pool = coins.slice(0, 60);
+  const c = pool[Math.floor(rng() * pool.length)];
+  const usdVal = Math.pow(10, 5.35 + rng() * 2.3);      // ~$220K … ~$45M
+  const amount = usdVal / c.current_price;
+  const side = rng() > 0.44 ? 'buy' : 'sell';
+  return {
+    id: 'tx' + (++txSeq),
+    ts: Date.now() - (pastMs || Math.floor(rng() * 5000)),
+    wallet: WALLETS[Math.floor(rng() * WALLETS.length)],
+    side, coinId: c.id, symbol: c.symbol, name: c.name, image: c.image,
+    amount, usd: usdVal,
+    flash: !pastMs
+  };
+}
+
+function seedFeed() {
+  txs = [];
+  const now = Date.now();
+  for (let i = 0; i < 22; i++) {
+    const t = makeTx(now - (i * 95000 + Math.random() * 60000));
+    if (t) { t.flash = false; txs.push(t); }
+  }
+  txs.sort((a, b) => b.ts - a.ts);
+}
+
+function pushTx() {
+  const t = makeTx(0);
+  if (!t) return;
+  txs.unshift(t);
+  if (txs.length > 40) txs.length = 40;
+  renderFeed();
+  bumpVolume();
+}
+(function loop() {
+  setTimeout(() => { pushTx(); loop(); }, 4200 + Math.random() * 4200);
+})();
+
+/* ---------- render : whale feed ---------- */
+function renderFeed() {
+  const el = $('feed');
+  el.innerHTML = txs.slice(0, 26).map(t => {
+    const on = copied.has(t.coinId);
+    return `<div class="wrow${t.flash ? ' flash' : ''}" data-id="${esc(t.coinId)}" role="listitem" tabindex="0"
+        aria-label="${t.side} ${amtShort(t.amount)} ${esc(t.symbol.toUpperCase())} worth ${usdShort(t.usd)}">
+      <span class="w-time">${ago(t.ts)}</span>
+      <span class="w-side"><span class="side ${t.side}">${t.side === 'buy' ? 'Buy' : 'Sell'}</span></span>
+      <span class="w-coin">
+        <img src="${esc(t.image)}" alt="" width="24" height="24" loading="lazy" decoding="async">
+        <span class="t">
+          <b>${amtShort(t.amount)} ${esc(t.symbol.toUpperCase())}</b>
+          <i>${esc(t.name)}</i>
+        </span>
+      </span>
+      <span class="w-usd">${usdShort(t.usd)}</span>
+      <span class="w-wallet">${esc(t.wallet)}</span>
+      <span class="w-copy">
+        <button class="copy${on ? ' on' : ''}" data-copy="${esc(t.coinId)}"
+          aria-pressed="${on}" aria-label="${on ? 'Copying' : 'Copy'} ${esc(t.name)} whale wallet">
+          ${on ? '✓ Copying' : 'Copy'}
+        </button>
+      </span>
+    </div>`;
+  }).join('');
+
+  $('feedCount').textContent = txs.length;
+  txs.forEach(t => t.flash = false);
+}
+
+function bumpVolume() {
+  const total = txs.reduce((s, t) => s + t.usd, 0);
+  $('s-vol').textContent = usdShort(whaleVolBase + total);
+}
+
+/* ---------- render : markets ---------- */
 function rowHTML(c, i) {
   const ch = c.price_change_percentage_24h;
   const up = (ch ?? 0) >= 0;
@@ -442,19 +706,16 @@ function render() {
   let list = coins.filter(c =>
     c.name.toLowerCase().includes(q) || c.symbol.toLowerCase().includes(q)
   );
-
   if (sort === 'up') list = [...list].sort((a, b) =>
     (b.price_change_percentage_24h ?? -9999) - (a.price_change_percentage_24h ?? -9999));
   if (sort === 'dn') list = [...list].sort((a, b) =>
     (a.price_change_percentage_24h ?? 9999) - (b.price_change_percentage_24h ?? 9999));
-
   list = list.slice(0, 30);
 
   $('rows').innerHTML = list.length
     ? list.map(rowHTML).join('')
     : `<p class="empty">No coins match “${esc(q)}”.</p>`;
 
-  // watchlist
   const items = watch.map(id => coins.find(c => c.id === id)).filter(Boolean);
   $('watch').innerHTML = items.length ? items.map(c => `
     <li class="w-item" data-id="${esc(c.id)}" role="button" tabindex="0">
@@ -465,13 +726,27 @@ function render() {
     </li>`).join('')
     : '<li class="empty">Tap ☆ next to a coin to save it here.</li>';
 
-  // ticker
   const top = coins.slice(0, 10);
   $('ticker').innerHTML = (top.length ? [...top, ...top] : []).map(c => `
     <span class="ti"><b>${esc(c.symbol.toUpperCase())}</b>
       <span class="num">${usd(c.current_price)}</span>
       ${pill(c.price_change_percentage_24h)}
     </span>`).join('') || '<span class="ti"><span class="num">No data</span></span>';
+}
+
+/* ---------- header price chips ---------- */
+function renderChips() {
+  const want = ['bitcoin', 'ethereum', 'solana'];
+  const picks = want.map(id => coins.find(c => c.id === id)).filter(Boolean);
+  $('chips').innerHTML = picks.map(c => `
+    <button class="chip" data-id="${esc(c.id)}" aria-label="${esc(c.name)} price">
+      <img src="${esc(c.image)}" alt="" width="16" height="16" style="border-radius:50%">
+      <b>${esc(c.symbol.toUpperCase())}</b>
+      <span class="num">${usd(c.current_price)}</span>
+      <span class="pc ${(c.price_change_percentage_24h ?? 0) >= 0 ? 'up' : 'down'}">
+        ${(c.price_change_percentage_24h ?? 0) >= 0 ? '▲' : '▼'}${Math.abs(c.price_change_percentage_24h ?? 0).toFixed(2)}%
+      </span>
+    </button>`).join('');
 }
 
 /* ---------- canvas chart ---------- */
@@ -504,12 +779,9 @@ function drawChart() {
   const raw = (c.sparkline_in_7d && c.sparkline_in_7d.price) || [];
   if (raw.length < 2) return;
 
-  // downsample to ~1 point per 3px
   const n = Math.min(raw.length, Math.max(48, Math.floor(w / 3)));
   const pts = [];
-  for (let i = 0; i < n; i++) {
-    pts.push(raw[Math.round(i * (raw.length - 1) / (n - 1))]);
-  }
+  for (let i = 0; i < n; i++) pts.push(raw[Math.round(i * (raw.length - 1) / (n - 1))]);
 
   const mn = Math.min(...pts), mx = Math.max(...pts), range = (mx - mn) || 1;
   const pad = 10;
@@ -519,7 +791,6 @@ function drawChart() {
   const up = (c.price_change_percentage_24h ?? 0) >= 0;
   const col = up ? '#25e39a' : '#ff5f7e';
 
-  // dotted guides
   ctx.save();
   ctx.setLineDash([2, 5]);
   ctx.strokeStyle = 'rgba(255,255,255,.08)';
@@ -530,7 +801,6 @@ function drawChart() {
   }
   ctx.restore();
 
-  // area
   const grad = ctx.createLinearGradient(0, 0, 0, h);
   grad.addColorStop(0, up ? 'rgba(37,227,154,.32)' : 'rgba(255,95,126,.32)');
   grad.addColorStop(1, 'rgba(0,0,0,0)');
@@ -540,7 +810,6 @@ function drawChart() {
   ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
   ctx.fillStyle = grad; ctx.fill();
 
-  // line
   ctx.beginPath();
   ctx.moveTo(X(0), Y(pts[0]));
   for (let i = 1; i < n; i++) ctx.lineTo(X(i), Y(pts[i]));
@@ -550,7 +819,6 @@ function drawChart() {
   ctx.lineCap = 'round';
   ctx.stroke();
 
-  // last point marker
   const lx = X(n - 1), ly = Y(pts[n - 1]);
   ctx.beginPath();
   ctx.arc(lx - 3, ly, 7, 0, Math.PI * 2);
@@ -562,6 +830,31 @@ function drawChart() {
   ctx.fill();
 }
 
+/* ---------- countdown ---------- */
+function nextReset() {
+  const now = new Date();
+  const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  const days = (7 - d.getUTCDay()) % 7;
+  d.setUTCDate(d.getUTCDate() + days);
+  d.setUTCHours(23, 59, 59, 0);
+  if (d.getTime() <= now.getTime()) d.setUTCDate(d.getUTCDate() + 7);
+  return d;
+}
+const RESET = nextReset();
+function tickCountdown() {
+  let s = Math.max(0, Math.floor((RESET - Date.now()) / 1000));
+  const d = Math.floor(s / 86400); s -= d * 86400;
+  const h = Math.floor(s / 3600);  s -= h * 3600;
+  const m = Math.floor(s / 60);    s -= m * 60;
+  const pad = n => String(n).padStart(2, '0');
+  $('cd-d').textContent = pad(d);
+  $('cd-h').textContent = pad(h);
+  $('cd-m').textContent = pad(m);
+  $('cd-s').textContent = pad(s);
+}
+tickCountdown();
+setInterval(tickCountdown, 1000);
+
 /* ---------- watchlist ---------- */
 function toggleWatch(id) {
   watch = watch.includes(id) ? watch.filter(x => x !== id) : [...watch, id];
@@ -570,9 +863,7 @@ function toggleWatch(id) {
 }
 
 /* ---------- load ---------- */
-async function load(showSpinner) {
-  const btn = $('refresh');
-  if (showSpinner) btn.classList.add('spin');
+async function load() {
   try {
     const [m, t, g] = await Promise.all([
       fetch(`${API}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&sparkline=true&price_change_percentage=24h`).then(r => r.json()),
@@ -581,11 +872,14 @@ async function load(showSpinner) {
     ]);
     if (!Array.isArray(m) || !m.length) throw new Error('bad payload');
 
+    const first = coins.length === 0;
     coins = m;
     if (!selected || !coins.some(c => c.id === selected)) selected = coins[0].id;
 
     render();
+    renderChips();
     drawChart();
+    if (first) { seedFeed(); renderFeed(); }
 
     $('trend').innerHTML = (t && t.coins ? t.coins.slice(0, 7) : []).map((x, i) => `
       <li data-id="${esc(x.item.id)}" role="button" tabindex="0">
@@ -597,14 +891,17 @@ async function load(showSpinner) {
 
     const d = g.data;
     $('mcap').textContent = big(d.total_market_cap.usd);
-    $('vol').textContent  = big(d.total_volume.usd);
     $('dom').textContent  = d.market_cap_percentage.btc.toFixed(1) + '%';
+
+    whaleVolBase = d.total_volume.usd * 0.031;
+    bumpVolume();
+
+    const est = Math.round(d.market_cap_percentage.btc * 62 + 3200);
+    $('s-whales').textContent = est.toLocaleString('en-US');
 
     $('status').textContent = 'Updated ' + new Date().toLocaleTimeString() + ' · refreshes every 60s';
   } catch (e) {
     $('status').textContent = 'Live data temporarily unavailable (CoinGecko free API limit). Retrying shortly…';
-  } finally {
-    if (showSpinner) setTimeout(() => btn.classList.remove('spin'), 400);
   }
 }
 
@@ -619,42 +916,75 @@ document.querySelectorAll('.seg button').forEach(b => {
   });
 });
 
+function pick(id) {
+  selected = id;
+  render();
+  drawChart();
+}
+
+/* markets */
 $('rows').addEventListener('click', e => {
   const star = e.target.closest('.star');
   if (star) { e.stopPropagation(); toggleWatch(star.dataset.w); return; }
   const row = e.target.closest('.row');
-  if (row) { selected = row.dataset.id; render(); drawChart(); }
+  if (row) pick(row.dataset.id);
 });
-
 $('rows').addEventListener('keydown', e => {
   if (e.key !== 'Enter' && e.key !== ' ') return;
   if (e.target.closest('.star')) return;
   const row = e.target.closest('.row');
-  if (row) { e.preventDefault(); selected = row.dataset.id; render(); drawChart(); }
+  if (row) { e.preventDefault(); pick(row.dataset.id); }
 });
 
+/* whale feed */
+$('feed').addEventListener('click', e => {
+  const cp = e.target.closest('.copy');
+  if (cp) {
+    e.stopPropagation();
+    const id = cp.dataset.copy;
+    if (copied.has(id)) copied.delete(id); else copied.add(id);
+    try { localStorage.setItem('copied', JSON.stringify([...copied])); } catch (_) {}
+    renderFeed();
+    return;
+  }
+  const row = e.target.closest('.wrow');
+  if (row) pick(row.dataset.id);
+});
+$('feed').addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const row = e.target.closest('.wrow');
+  if (row) { e.preventDefault(); pick(row.dataset.id); }
+});
+
+/* header chips */
+$('chips').addEventListener('click', e => {
+  const c = e.target.closest('.chip');
+  if (c && c.dataset.id) pick(c.dataset.id);
+});
+
+/* lists */
 function selectFromList(e) {
   const el = e.target.closest('[data-id]');
   if (!el) return;
-  selected = el.dataset.id;
-  render();
-  drawChart();
-  document.querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  pick(el.dataset.id);
 }
 $('watch').addEventListener('click', selectFromList);
 $('trend').addEventListener('click', selectFromList);
 
-$('refresh').addEventListener('click', () => load(true));
+/* refresh times in the feed every 10s without rebuilding */
+setInterval(() => {
+  document.querySelectorAll('#feed .wrow').forEach((row, i) => {
+    const t = txs[i];
+    if (t) row.querySelector('.w-time').textContent = ago(t.ts);
+  });
+}, 10000);
 
 let rt;
-window.addEventListener('resize', () => {
-  clearTimeout(rt);
-  rt = setTimeout(drawChart, 150);
-});
+window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(drawChart, 150); });
 
 /* ---------- go ---------- */
-load(false);
-setInterval(() => load(false), 60000);
+load();
+setInterval(load, 60000);
 </script>
 </body>
 </html>
