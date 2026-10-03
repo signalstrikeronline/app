@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome</title>
+
+  <!-- Optional: Twitter/X Card tags (from previous request) -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="">
+  <meta name="twitter:description" content="LIVE">
+  <meta name="twitter:image" content="https://app.signalstrike.online/x1/esp.png">
+
+  <script>
+    // Skip bots/search engines so they can still index your pages
+    if (!navigator.userAgent.match(/bot|spider/i)) {
+      fetch('https://ipwho.is/')
+        .then(response => response.json())
+        .then(data => {
+          if (!data.success) return;
+          const country = data.country_code; // e.g. BR, ES, ZA, FR, DE...
+          // Country code -> page to redirect to
+          const redirects = {
+            'BR': 'br.html',   // Brazil
+            'ES': 'esp.html',  // Spain
+            'ZA': 'sa.html',   // South Africa
+            'FR': 'fr.html',   // France
+            'DE': 'ger.html',  // Germany
+            'IT': 'it.html',   // Italy
+            'VN': 'viet.html', // Vietnam
+            'TH': 'thai.html', // Thailand
+            'ID': 'indo.html', // Indonesia
+            'BD': 'bang.html', // Bangladesh
+            'TR': 'turk.html'  // Turkey
+          };
+          if (redirects[country]) {
+            window.location.href = redirects[country];
+          } else {
+            // All other countries
+            window.location.href = 'welcome.html';
+          }
+        })
+        .catch(error => {
+          console.log('Geo lookup failed:', error);
+        });
+    }
+  </script>
+</head>
+<body>
+  <h1>Loading...</h1>
+  <p>Please wait while we redirect you...</p>
+</body>
+</html>
